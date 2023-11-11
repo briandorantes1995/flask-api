@@ -1,10 +1,21 @@
-# main.py
+# app.py
+from flask import Flask
+from flask_cors import CORS
+from dotenv import load_dotenv, dotenv_values
+from models import db
+from api import api
+
+load_dotenv()
+
+
+app = Flask(__name__)
+config = dotenv_values()
+app.config.from_mapping(config)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.register_blueprint(api, url_prefix="/api")
+db.init_app(app)
+
+
 if __name__ == '__main__':
-    from application import create_app
 
-    app = create_app()
-
-    # Agrega un mensaje de depuración para verificar si app se está creando correctamente
-    print("App created successfully")
-
-    app.run(debug=True, port=8056)  # Esto puede no ser necesario si estás usando Gunicorn
+    app.run(debug=True, port=8056)
