@@ -18,7 +18,7 @@ class Usuario(db.Model):
     def __init__(self, nombre, email, password):
         self.nombre = nombre
         self.email = email
-        self.password = generate_password_hash(password, method='sha256')
+        self.password = generate_password_hash(password)
 
     @classmethod
     def authenticate(cls, **kwargs):
@@ -50,7 +50,7 @@ class Empleado(db.Model):
     def __init__(self, nombre, email, password):
         self.nombre = nombre
         self.email = email
-        self.password = generate_password_hash(password, method='sha256')
+        self.password = generate_password_hash(password)
 
     @classmethod
     def authenticate(cls, **kwargs):
