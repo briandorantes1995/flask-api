@@ -93,6 +93,7 @@ class TipoHabitacion(db.Model):
 class Habitacion(db.Model):
     __tablename__ = "habitaciones"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    imagen = db.Column(db.String(255), nullable=False)
     numero = db.Column(db.String(255), nullable=False)
     costo = db.Column(db.String(255), nullable=False)
     tipo_habitacion_id = db.Column(db.Integer, db.ForeignKey('tipo_habitacion.id'))

@@ -9,6 +9,39 @@ from models import db, Usuario, Empleado, Habitacion, TipoHabitacion, Reservacio
 api = Blueprint('api', __name__)
 
 
+def token_required(f):
+    @wraps(f)
+    def _verify(*args, **kwargs):
+        auth_headers = request.headers.get('Authorization', '').split()
+
+        invalid_msg = {
+            'message': 'Invalid token. Registeration and / or authentication required',
+            'authenticated': False
+        }
+        expired_msg = {
+            'message': 'Expired token. Reauthentication required.',
+            'authenticated': False
+        }
+
+        if len(auth_headers) != 2:
+            return jsonify(invalid_msg), 401
+
+        try:
+            token = auth_headers[1]
+            data = jwt.decode(token, current_app.config['SECRET_KEY'])
+            user = Usuario.query.filter_by(email=data['sub']).first()
+            if not user:
+                raise RuntimeError('User not found')
+            return f(user, *args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            return jsonify(expired_msg), 401  # 401 is Unauthorized HTTP status code
+        except (jwt.InvalidTokenError, Exception) as e:
+            print(e)
+            return jsonify(invalid_msg), 401
+
+    return _verify
+
+
 @api.route('/')
 def hello_world():
     return 'Inicio Proy Int 2'
@@ -82,3 +115,19 @@ async def crear_habitacion():
 def mostrar_habitaciones():
     habitaciones = Habitacion.query.all()
     return jsonify([s.to_dict() for s in habitaciones])
+
+
+# Crear Reservacion
+@api.route('/crearReservacion', methods=['POST'])
+async def crear_reservacion():
+    data = request.get_json()
+    reservacion = Reservacion(**data)
+    db.session.add(reservacion)
+    db.session.commit()
+
+
+# Mostrar Habitaciones
+@api.route('/Reservaciones', methods=['GET'])
+def mostrar_reservaciones():
+    reservaciones = Habitacion.query.all()
+    return jsonify([s.to_dict() for s in reservaciones])
