@@ -103,7 +103,7 @@ def mostrar_tipos():
 
 # Crear Habitacion
 @api.route('/crearHabitacion', methods=['POST'])
-async def crear_habitacion():
+def crear_habitacion():
     data = request.get_json()
     habitacion = Habitacion(**data)
     db.session.add(habitacion)
@@ -119,7 +119,7 @@ def mostrar_habitaciones():
 
 # Crear Reservacion
 @api.route('/crearReservacion', methods=['POST'])
-async def crear_reservacion():
+def crear_reservacion():
     data = request.get_json()
     reservacion = Reservacion(**data)
     db.session.add(reservacion)
