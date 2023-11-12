@@ -94,6 +94,7 @@ class Habitacion(db.Model):
     __tablename__ = "habitaciones"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     imagen = db.Column(db.String(255), nullable=False)
+    nombre = db.Column(db.String(255), nullable=False)
     numero = db.Column(db.String(255), nullable=False)
     costo = db.Column(db.String(255), nullable=False)
     tipo_habitacion_id = db.Column(db.Integer, db.ForeignKey('tipo_habitacion.id'))
@@ -101,13 +102,16 @@ class Habitacion(db.Model):
     reservaciones = db.relationship('Reservacion', back_populates='habitacion')
     __table_args__ = {'mysql_engine': 'InnoDB'}
 
-    def __init__(self, numero, costo, tipo):
+    def __init__(self, imagen, nombre, numero, costo, tipo):
+        self.imagen = imagen
+        self.nombre = nombre
         self.numero = numero
         self.costo = costo
         self.tipo_habitacion_id = tipo
 
     def to_dict(self):
-        return dict(id=self.id, numero=self.numero, costo=self.costo, tipo=self.tipo_habitacion)
+        return dict(id=self.id, imagen=self.imagen, nombre=self.nombre,
+                    numero=self.numero, costo=self.costo, tipo=self.tipo_habitacion)
 
 
 class Reservacion(db.Model):
@@ -120,6 +124,11 @@ class Reservacion(db.Model):
     usuario = db.relationship('Usuario', back_populates='reservaciones')
     habitacion = db.relationship('Habitacion', back_populates='reservaciones')
     __table_args__ = {'mysql_engine': 'InnoDB'}
+
+    def __init__(self, dias, usuario, habitacion):
+        self.dias = dias
+        self.usuario_id = usuario
+        self.habitacion_id = habitacion
 
     def to_dict(self):
         return dict(id=self.id,
