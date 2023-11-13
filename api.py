@@ -89,7 +89,7 @@ def crear_tipo():
         db.session.add(tipo)
         db.session.commit()
 
-        return jsonify({"message": "TipoHabitacion created successfully"}), 201
+        return jsonify({"message": "TipoHabitacion creada Exitosamente"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -104,10 +104,14 @@ def mostrar_tipos():
 # Crear Habitacion
 @api.route('/crearHabitacion', methods=['POST'])
 def crear_habitacion():
-    data = request.get_json()
-    habitacion = Habitacion(**data)
-    db.session.add(habitacion)
-    db.session.commit()
+    try:
+        data = request.get_json()
+        habitacion = Habitacion(**data)
+        db.session.add(habitacion)
+        db.session.commit()
+        return jsonify({"message": "Habitacion  creada Exitosamente"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 # Mostrar Habitaciones
