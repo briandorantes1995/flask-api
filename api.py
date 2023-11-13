@@ -98,7 +98,7 @@ def crear_tipo():
 @api.route('/Tipos', methods=['GET'])
 def mostrar_tipos():
     tipos = TipoHabitacion.query.all()
-    return jsonify([s.to_dict() for s in tipos])
+    return jsonify([tipo.to_dict() for tipo in tipos])
 
 
 # Crear Habitacion

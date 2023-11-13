@@ -75,7 +75,7 @@ class TipoHabitacion(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tipo = db.Column(db.String(255), unique=True)
     descripcion = db.Column(db.String(255), nullable=True)
-    habitaciones = db.relationship('Habitacion', back_populates='tipo_habitacion')
+    habitaciones = db.relationship('Habitacion', back_populates='tipo_habitacion', lazy='dynamic')
     __table_args__ = {'mysql_engine': 'InnoDB'}
 
     def __init__(self, tipo, descripcion):
@@ -86,8 +86,7 @@ class TipoHabitacion(db.Model):
         return dict(id=self.id,
                     tipo=self.tipo,
                     descripcion=self.descripcion,
-                    habitaciones=[habitacion for habitacion in
-                                  Habitacion.query.filter_by(tipo_habitacion=self).all()])
+                    habitaciones=[habitacion.to_dict() for habitacion in self.habitaciones.all()])
 
 
 class Habitacion(db.Model):
@@ -98,7 +97,7 @@ class Habitacion(db.Model):
     numero = db.Column(db.String(255), nullable=False)
     costo = db.Column(db.String(255), nullable=False)
     tipo_habitacion_id = db.Column(db.Integer, db.ForeignKey('tipo_habitacion.id'))
-    tipo_habitacion = db.relationship('TipoHabitacion', back_populates='habitaciones')
+    tipo_habitacion = db.relationship('TipoHabitacion', back_populates='habitaciones', lazy='select')
     reservaciones = db.relationship('Reservacion', back_populates='habitacion')
     __table_args__ = {'mysql_engine': 'InnoDB'}
 
@@ -111,7 +110,7 @@ class Habitacion(db.Model):
 
     def to_dict(self):
         return dict(id=self.id, imagen=self.imagen, nombre=self.nombre,
-                    numero=self.numero, costo=self.costo, tipo=self.tipo_habitacion)
+                    numero=self.numero, costo=self.costo, tipo=self.tipo_habitacion.to_dict())
 
 
 class Reservacion(db.Model):
