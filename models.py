@@ -110,7 +110,8 @@ class Habitacion(db.Model):
 
     def to_dict(self):
         return dict(id=self.id, imagen=self.imagen, nombre=self.nombre,
-                    numero=self.numero, costo=self.costo, tipo=self.tipo_habitacion.to_dict())
+                    numero=self.numero, costo=self.costo,
+                    tipo_habitacion=self.tipo_habitacion.to_dict() if self.tipo_habitacion else None)
 
 
 class Reservacion(db.Model):
