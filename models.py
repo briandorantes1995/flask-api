@@ -86,7 +86,7 @@ class TipoHabitacion(db.Model):
         return dict(id=self.id,
                     tipo=self.tipo,
                     descripcion=self.descripcion,
-                    habitaciones=[habitacion.to_dict() for habitacion in
+                    habitaciones=[habitacion for habitacion in
                                   Habitacion.query.filter_by(tipo_habitacion=self).all()])
 
 
