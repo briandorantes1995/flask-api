@@ -118,7 +118,7 @@ def crear_habitacion():
 @api.route('/Habitaciones', methods=['GET'])
 def mostrar_habitaciones():
     habitaciones = Habitacion.query.all()
-    return jsonify([s.to_dict() for s in habitaciones])
+    return jsonify([s for s in habitaciones])
 
 
 # Crear Reservacion
@@ -134,4 +134,4 @@ def crear_reservacion():
 @api.route('/Reservaciones', methods=['GET'])
 def mostrar_reservaciones():
     reservaciones = Habitacion.query.all()
-    return jsonify([s.to_dict() for s in reservaciones])
+    return jsonify([s for s in reservaciones])
