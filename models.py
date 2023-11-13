@@ -85,8 +85,7 @@ class TipoHabitacion(db.Model):
     def to_dict(self):
         return dict(id=self.id,
                     tipo=self.tipo,
-                    descripcion=self.descripcion,
-                    habitaciones=[habitacion.to_dict() for habitacion in self.habitaciones.all()])
+                    descripcion=self.descripcion,)
 
 
 class Habitacion(db.Model):
@@ -111,7 +110,7 @@ class Habitacion(db.Model):
     def to_dict(self):
         return dict(id=self.id, imagen=self.imagen, nombre=self.nombre,
                     numero=self.numero, costo=self.costo,
-                    tipo_habitacion=self.tipo_habitacion.to_dict() if self.tipo_habitacion else None)
+                    tipo=self.tipo_habitacion.to_dict())
 
 
 class Reservacion(db.Model):
