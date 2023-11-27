@@ -121,6 +121,17 @@ def mostrar_habitaciones():
     return jsonify([habitacion.to_dict() for habitacion in habitaciones])
 
 
+# Ruta para obtener una habitación por ID
+@api.route('/Habitacion/<int:habitacion_id>', methods=['GET'])
+def obtener_habitacion_por_id(habitacion_id):
+    habitacion = Habitacion.query.get(habitacion_id)
+
+    if habitacion:
+        return jsonify(habitacion.to_dict())
+    else:
+        return jsonify({"mensaje": "Habitación no encontrada"}), 404
+
+
 # Crear Reservacion
 @api.route('/crearReservacion', methods=['POST'])
 def crear_reservacion():
