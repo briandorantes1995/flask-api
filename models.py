@@ -134,4 +134,6 @@ class Reservacion(db.Model):
                     fecha_inicial=self.reservado_desde.strftime('%d-%m-%Y'),
                     dias=self.dias,
                     usuario=self.usuario.nombre if self.usuario else None,
-                    habitacion=self.habitacion.numero if self.habitacion else None)
+                    habitacion=self.habitacion.numero if self.habitacion else None,
+                    costo=self.habitacion.costo if self.habitacion else None)
+
